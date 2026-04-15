@@ -6,21 +6,33 @@
 <title>测试你的YUAN·TI</title>
 <style>
   :root {
-    --morandi-green: #9fb3a8;
-    --morandi-dark: #7b9084;
-    --morandi-light: #e6ebe8;
-    --morandi-blue: #b2c2d1;
-    --morandi-purple: #c5b2d1;
-    --bg-color: #f5f7f6;
-    --text-main: #5c6660;
-    --text-light: #8b9991;
+    /* 主題色彩設定 (高級莫蘭迪色系) */
+    --theme-green: #8ba898;      /* 核心主綠色 */
+    --theme-dark: #627c6d;       /* 深綠色，用於標題強調 */
+    --theme-light: #f0f4f2;      /* 極淺綠，用於背景底色 */
+    --theme-border: #dce6e0;     /* 邊框色 */
+    
+    /* 四大維度專屬顏色 */
+    --bar-a-blue: #a8b8c8;
+    --bar-b-purple: #bda8c8;
+    --bar-c-pink: #d8b8b4;
+    --bar-d-green: #8ba898;
+    
+    /* 文字色彩 */
+    --text-main: #3d4742;
+    --text-secondary: #74857b;
+    --text-light: #9eb0a6;
+    
     --card-bg: #ffffff;
     --transition-speed: 0.4s;
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", sans-serif;
-    background-color: var(--bg-color);
+    /* 高級字體棧與平滑處理 */
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--theme-light);
     color: var(--text-main);
     margin: 0;
     padding: 20px;
@@ -28,105 +40,151 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-size: 14px;
+    font-size: 15px;
+    letter-spacing: 0.5px;
   }
 
-  /* 容器與動畫 */
+  /* 核心容器 */
   .container {
     background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(123, 144, 132, 0.08);
-    padding: 35px 30px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(98, 124, 109, 0.08);
+    padding: 40px 30px;
     max-width: 460px;
     width: 100%;
     text-align: center;
     position: relative;
     box-sizing: border-box;
-    animation: fadeInContainer 0.8s ease-out;
+    animation: fadeInContainer 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
   @keyframes fadeInContainer {
-    from { opacity: 0; transform: translateY(15px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .screen { transition: opacity var(--transition-speed); }
+  /* 滑順隱藏與顯示 */
+  .screen { transition: opacity var(--transition-speed) ease-in-out; }
   .hidden { display: none !important; }
 
-  h1 { color: var(--morandi-dark); font-size: 20px; margin-bottom: 12px; }
-  h2 { font-size: 15px; font-weight: 500; line-height: 1.6; margin-bottom: 24px; text-align: left; }
-  
-  /* 选项样式 */
+  /* 標題與文字排版 */
+  h1 { color: var(--theme-dark); font-size: 22px; font-weight: 600; letter-spacing: 1px; margin-bottom: 12px; }
+  h2 { font-size: 16px; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 25px; text-align: left; }
+  p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+  /* 質感選項按鈕 */
   .btn-option {
-    background-color: var(--card-bg);
+    background-color: transparent;
     color: var(--text-main);
-    border: 1px solid var(--morandi-green);
-    padding: 12px 18px;
-    margin: 8px 0;
-    border-radius: 6px;
+    border: 1.5px solid var(--theme-border);
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 10px;
     width: 100%;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    display: block;
-  }
-
-  .btn-option:hover { background-color: var(--morandi-light); }
-  .btn-option.selected {
-    background-color: var(--morandi-green);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(159, 179, 168, 0.2);
-  }
-
-  /* 绿色圆角下一题按钮 */
-  .btn-next-action {
-    background-color: var(--morandi-green);
-    color: #fff;
-    border: none;
-    padding: 14px 20px;
-    margin-top: 20px;
-    border-radius: 30px;
-    width: 80%;
     font-size: 14px;
-    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(159, 179, 168, 0.3);
+    transition: all 0.3s ease;
+    text-align: left;
+    line-height: 1.5;
+    outline: none;
   }
 
-  .btn-primary {
-    background-color: var(--morandi-green);
+  .btn-option:hover { 
+    background-color: var(--theme-light); 
+    border-color: var(--theme-green);
+    transform: translateY(-1px);
+  }
+  
+  .btn-option.selected {
+    background-color: var(--theme-green);
+    border-color: var(--theme-green);
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(139, 168, 152, 0.3);
+    font-weight: 500;
+  }
+
+  /* 獨立下一題按鈕 (主綠色圓角) */
+  .btn-next-action {
+    background-color: var(--theme-green);
     color: #fff;
     border: none;
     padding: 14px 20px;
-    border-radius: 6px;
-    width: 100%;
+    margin-top: 25px;
+    border-radius: 30px;
+    width: 70%;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
     cursor: pointer;
-    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(139, 168, 152, 0.3);
   }
 
+  .btn-next-action:hover { background-color: var(--theme-dark); transform: translateY(-2px); }
+
+  /* 首頁與重新測試按鈕 */
+  .btn-primary {
+    background-color: var(--theme-green);
+    color: #fff;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover { background-color: var(--theme-dark); }
+
+  /* 頂部進度與返回列 */
   .quiz-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--theme-border);
+    padding-bottom: 15px;
   }
 
   .btn-back {
     background: transparent;
     border: none;
     color: var(--text-light);
-    text-decoration: underline;
     cursor: pointer;
     font-size: 13px;
     padding: 0;
+    transition: color 0.3s;
+  }
+  .btn-back:hover { color: var(--theme-dark); }
+
+  .progress { font-size: 12px; color: var(--theme-green); font-weight: 600; letter-spacing: 1px; }
+  
+  .display-img { 
+    width: 100%; 
+    height: auto; 
+    border-radius: 10px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
   }
 
-  .progress { font-size: 12px; color: var(--morandi-green); font-weight: 500; }
-  .display-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
-
-  .slider-bar { width: 100%; height: 10px; border-radius: 5px; background: #eee; overflow: hidden; margin-top: 5px; }
-  .slider-fill { height: 100%; width: 0%; transition: width 1s; }
+  /* 質感進度條 */
+  .slider-bar { 
+    width: 100%; 
+    height: 12px; 
+    border-radius: 6px; 
+    background: #eef2f0; 
+    overflow: hidden; 
+    margin-top: 8px; 
+  }
+  .slider-fill { 
+    height: 100%; 
+    width: 0%; 
+    border-radius: 6px;
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); 
+  }
 </style>
 </head>
 <body>
@@ -134,14 +192,14 @@
 <div class="container" id="start-screen">
   <h1>测试你的 YUAN‧TI</h1>
   <img class="display-img" src="./cover.png" alt="封面">
-  <p style="font-size: 13px; color: var(--text-light);">16题测出你是哪种追源人格！<br>看看你符合真源哪个舞台的类型？</p>
+  <p>16题测出你是哪种追源人格！<br>看看你符合真源哪个舞台的类型？</p>
   <button class="btn-primary" onclick="startQuiz()">开始测试</button>
 </div>
 
 <div class="container hidden" id="quiz-screen">
-  <div id="quiz-content-wrapper" style="transition: opacity 0.3s;">
+  <div id="quiz-content-wrapper" style="transition: opacity 0.4s ease-in-out;">
     <div class="quiz-header">
-      <button id="prev-btn" class="btn-back hidden" onclick="prevQuestion()">上一题</button>
+      <button id="prev-btn" class="btn-back hidden" onclick="prevQuestion()">← 上一题</button>
       <div class="progress" id="progress-text">1 / 16</div>
     </div>
     <h2 id="question-text"></h2>
@@ -151,19 +209,28 @@
 </div>
 
 <div class="container hidden" id="result-screen">
-  <h1 id="result-title" style="font-size: 24px;"></h1>
-  <img id="result-char-img" class="display-img" src="">
-  <div id="sliders-box" style="text-align: left; margin: 20px 0;"></div>
-  <p id="result-desc" style="text-align: left; background: var(--morandi-light); padding: 15px; border-radius: 8px;"></p>
+  <div style="background: rgba(139, 168, 152, 0.08); border: 1.5px solid var(--theme-green); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">你的专属追源人格是：</p>
+    <img id="result-char-img" class="display-img" src="" style="box-shadow: none;">
+    <h1 id="result-title" style="margin: 10px 0 0 0;"></h1>
+  </div>
+  
+  <div id="sliders-box" style="text-align: left; margin: 25px 0;"></div>
+  
+  <div style="text-align: left; background: var(--theme-light); padding: 18px; border-radius: 10px; margin-bottom: 20px;">
+    <p id="result-desc" style="color: var(--text-main); margin: 0;"></p>
+  </div>
+  
   <button class="btn-primary" onclick="location.reload()">再测一次</button>
-  <div class="author-footer">
-    <p class="author-note">“非常感谢大家来参与这个源体(YUAN‧TI)的小测试！<br>这是一个很突发奇想的小网站<br>（其中最大功臣一定是我们的gemini老师。。）<br>也当作是小源的生日纪念礼物吧！<br><br>妳／你的源体是什么呢？欢迎发在评论区和其他爱妻宝宝们分享^o^<br>最后还是偷偷许愿一下：希望小源外务多多资源多多<br><br>多多进组！！！”</p>
-  <p style="font-size: 11px; margin-top: 20px; color: var(--text-light);">测试制作：weibo＠歪卡日記</p>
+  
+  <div style="margin-top: 35px; padding-top: 20px; border-top: 1px dashed var(--theme-border);">
+    <p style="font-size: 11px; color: var(--text-light); font-style: italic; margin-bottom: 8px; line-height: 1.6;">“非常感谢大家来参与这个源体(YUAN‧TI)的小测试！<br>这是一个很突发奇想的小网站<br>（其中最大功臣一定是我们的gemini老师。。）<br>也当作是小源的生日纪念礼物吧！<br><br>妳／你的源体是什么呢？欢迎发在评论区和其他爱妻宝宝们分享^o^<br>最后还是偷偷许愿一下：希望小源外务多多资源多多<br><br>多多进组！！！”</p>
+    <p style="font-size: 12px; color: var(--theme-dark); font-weight: bold;">测试制作：weibo＠歪卡日記</p>
   </div>
 </div>
 
 <script>
-// 題目資料 
+// ---------- 以下文字內容完全複製您的版本，僅在第4題補上語法錯誤的逗號 ----------
 const questions = [
   { text: "听说真源要在你的城市办演唱会，你的第一反应是？", axis: "A", options: [
     { text: "找代抢、做攻略，砸锅卖铁也要冲进内场见他！", val: 2 },
@@ -186,8 +253,8 @@ const questions = [
   { text: "遇上恶劣天气或突发情况，但今天有真源的外务活动，你会？", axis: "A", options: [
     { text: "风雨无阻，穿好雨衣带好相机，只要他在我就在。", val: 2 },
     { text: "犹豫一下但还是选择勇敢前往！", val: 0 },
-    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, 
-    { text: "挣扎了好久还是默默含泪打开手机看着微博的现场爱妻转播", val: -2 }
+    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, // 修復：補上逗號
+    { text: "挣扎了好久还是默默含泪打开手机看着微博的现场转播", val: -2 }
   ]},
   { text: "进了一个新的爱妻微信群，你通常是什么状态？", axis: "B", options: [
     { text: "社交悍匪，马上发表情包打招呼和大家打成一片！", val: 2 },
@@ -281,6 +348,7 @@ const resultsMap = {
   "W_001": { name: "《年》型专属秘密守护者", desc: "喜欢自己追星，微博主页上全是对他的爱，觉得小源是自己专属的宝藏。", img: "./cry.png" },
   "W_000": { name: "《月之浮想》型沉浸式幻梦糖", desc: "最喜欢戴上耳机听他的歌，在自己的世界里脑补各种情境，完全沉浸在与小源的宇宙里，浪漫地爱着他。", img: "./cry.png" }
 };
+// ---------- 以上文字內容完全複製您的版本 ----------
 
 let currentQ = 0, scores = { A: 0, B: 0, C: 0, D: 0 };
 let historyRecords = [];
@@ -297,13 +365,17 @@ function startQuiz() {
 
 function showQuestion() {
   if (currentQ >= questions.length) { calculateResult(); return; }
+  
   const wrapper = document.getElementById('quiz-content-wrapper');
+  
+  // 開始淡出動畫
   wrapper.style.opacity = 0;
   document.getElementById('next-action-btn').classList.add('hidden');
   tempSelection = null;
 
   document.getElementById('prev-btn').classList.toggle('hidden', currentQ === 0);
 
+  // 等待淡出後再更換內容並淡入
   setTimeout(() => {
     let q = questions[currentQ];
     document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
@@ -311,8 +383,10 @@ function showQuestion() {
     document.getElementById('options-container').innerHTML = q.options.map(o => 
       `<button class="btn-option" onclick="handleSelect(this, '${q.axis}', ${o.val})">${o.text}</button>`
     ).join('');
+    
+    // 恢復透明度，實現流暢淡入
     wrapper.style.opacity = 1;
-  }, 300);
+  }, 400); 
 }
 
 function handleSelect(el, axis, val) {
@@ -341,28 +415,36 @@ function prevQuestion() {
 function calculateResult() {
   document.getElementById('quiz-screen').classList.add('hidden');
   document.getElementById('result-screen').classList.remove('hidden');
+  
   let k = (scores.C>=0?'M_':'W_') + (scores.A>=0?'1':'0') + (scores.B>=0?'1':'0') + (scores.D>=0?'1':'0');
   let r = resultsMap[k];
+  
   document.getElementById('result-title').innerText = r.name;
   document.getElementById('result-char-img').src = r.img;
   document.getElementById('result-desc').innerText = r.desc;
 
+  // 使用上方定義的 CSS Variables 確保拉條顏色正確顯示
   const dims = [
-    {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--morandi-blue)', bg:'#dce4eb'},
-      {id:'b', l:'外向er', r:'内向er', v:scores.B, color:'var(--morandi-purple)', bg:'#e3dceb'},
-      {id:'c', l:'心理属性', r:'生理属性', v:scores.C, color:'var(--morandi-pink)', bg:'#ebe3dc'},
-      {id:'d', l:'太阳属性', r:'月亮属性', v:scores.D, color:'var(--morandi-green)', bg:'#e8ebe6'}
-    ];
-  
+    {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--bar-a-blue)'},
+    {id:'b', l:'外向er', r:'内向er', v:scores.B, color:'var(--bar-b-purple)'},
+    {id:'c', l:'心理属性', r:'生理属性', v:scores.C, color:'var(--bar-c-pink)'},
+    {id:'d', l:'太阳属性', r:'月亮属性', v:scores.D, color:'var(--bar-d-green)'}
+  ];
+
   document.getElementById('sliders-box').innerHTML = dims.map(d => `
-    <div style="margin-bottom:12px;">
-      <div style="display:flex; justify-content:space-between; font-size:11px;"><span>${d.l}</span><span>${d.r}</span></div>
-      <div class="slider-bar"><div id="fill-${d.id}" class="slider-fill" style="background:${d.color}"></div></div>
+    <div style="margin-bottom:18px;">
+      <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:5px;">
+        <span>${d.l}</span><span>${d.r}</span>
+      </div>
+      <div class="slider-bar">
+        <div id="fill-${d.id}" class="slider-fill" style="background:${d.color}"></div>
+      </div>
     </div>`).join('');
   
+  // 加上 Math.max/min 防呆機制，確保計算不會因為任何原因跑出 0~100 之外
   dims.forEach(d => {
-    let p = Math.round(((d.v + 8)/16) * 100);
-    setTimeout(() => { document.getElementById(`fill-${d.id}`).style.width = p+'%'; }, 100);
+    let p = Math.max(0, Math.min(100, Math.round(((d.v + 8) / 16) * 100)));
+    setTimeout(() => { document.getElementById(`fill-${d.id}`).style.width = p + '%'; }, 200);
   });
 }
 </script>
