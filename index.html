@@ -136,4 +136,240 @@
     margin-top: 30px; padding-top: 15px;
     border-top: 1px dashed var(--morandi-green);
   }
-  .author-note { font-
+  .author-note { font-size: 11px; color: var(--text-light); font-style: italic; margin-bottom: 5px; }
+  .author-id { font-size: 12px; color: var(--morandi-dark); font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="container screen" id="start-screen">
+  <h1>测试你的 YUAN‧TI</h1>
+  <img id="main-cover-img" class="display-img" src="./cover.png" alt="张真源测验封面">
+  <p>16题测出你是哪种追源人格！<br>看看你符合真源哪个歌曲/舞台的类型？</p>
+  <button class="btn btn-primary" onclick="startQuiz()">开始测试</button>
+</div>
+
+<div class="container screen hidden" id="quiz-screen">
+  <div id="quiz-content-wrapper" style="transition: opacity 0.3s;">
+    <div class="progress" id="progress-text">1 / 16</div>
+    <h2 id="question-text"></h2>
+    <div id="options-container"></div>
+  </div>
+</div>
+
+<div class="container screen hidden" id="result-screen">
+  <div class="result-title-box">
+    <p style="font-size: 13px; margin-bottom: 12px; color: var(--text-main);">你的专属追源人格是：</p>
+    <img id="result-char-img" class="display-img" src="" alt="人格形象图">
+    <h1 id="result-title"></h1>
+  </div>
+
+  <div class="slider-container">
+    <p style="margin-bottom: 15px; color: var(--text-main); font-weight: 600; font-size: 13px;">四大维度属性占比</p>
+    <div id="sliders-box"></div>
+  </div>
+
+  <div class="result-desc" id="result-desc"></div>
+  
+  <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">再测一次</button>
+
+  <div class="author-footer">
+    <p class="author-note">“非常感谢大家来参与这个源体(YUAN‧TI)的小测试！<br>这是一个很突发奇想的小网站<br>（其中最大功臣一定是我们的gemini老师。。）<br>也当作是小源的生日纪念礼物吧！<br><br>妳／你的源体是什么呢？欢迎发在评论区和其他爱妻宝宝们分享^o^<br>最后还是偷偷许愿一下：希望小源外务多多资源多多<br><br>多多进组！！！”</p>
+    <p class="author-id">测试制作：weibo＠歪卡日記</p>
+  </div>
+</div>
+
+<script>
+// 題目資料 
+const questions = [
+  { text: "听说真源要在你的城市办演唱会，你的第一反应是？", axis: "A", options: [
+    { text: "找代抢、做攻略，砸锅卖铁也要冲进内场见他！", val: 2 },
+    { text: "自己设闹钟努力抢票，抢不到的话去场外感受氛围、拿无料也行。", val: 1 },
+    { text: "开始规划预约线上直播，在屏幕前也要有满满的仪式感。", val: -1 },
+    { text: "就等当天神仙站姐出神图和高清直拍，边刷微博边美美存图。", val: -2 }
+  ]},
+  { text: "看到首页有人发了真源公开活动的路透生图，你会？", axis: "A", options: [
+    { text: "要不我现在就买张机票过去吧？感觉不去一定会后悔！", val: 2 },
+    { text: "一边思考下次活动会在哪里，一边想着下次见他自己要穿什么。", val: 1 },
+    { text: "疯狂在各平台存图，并在微博上夸赞宝宝的状态！", val: -1 },
+    { text: "刚好刷到，顺手点赞站姐的图频，在线上默默欣赏小张的美貌。", val: -2 }
+  ]},
+  { text: "对你来说，追真源的路上最让你有“参与感”的瞬间是？", axis: "A", options: [
+    { text: "在台下举着灯牌，跟着全场合唱，大喊他的名字。", val: 2 },
+    { text: "参加爱妻举办的各种线下，和同担们一起玩耍的时候。", val: 1 },
+    { text: "真源发博后，第一时间冲进评论区抢前排并成功被翻牌。", val: -1 },
+    { text: "看到数据上涨，或者自己产出的安利向视频播放量破万。", val: -2 }
+  ]},
+  { text: "遇上恶劣天气或突发情况，但今天有真源的外务活动，你会？", axis: "A", options: [
+    { text: "风雨无阻，穿好雨衣带好相机，只要他在我就在。", val: 2 },
+    { text: "犹豫一下但还是选择勇敢前往！", val: 0 },
+    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, // 補上逗號
+    { text: "挣扎了好久还是默默含泪打开手机看着微博的现场转播", val: -2 }
+  ]},
+  { text: "进了一个新的爱妻微信群，你通常是什么状态？", axis: "B", options: [
+    { text: "社交悍匪，马上发表情包打招呼和大家打成一片！", val: 2 },
+    { text: "礼貌打招呼，遇到感兴趣的物料会跟着一起嚎两句。", val: 1 },
+    { text: "长期潜水，默默收图看戏，不太爱主动发言。", val: -1 },
+    { text: "根本不加群，我只喜欢在社交平台上自己追星。", val: -2 }
+  ]},
+  { text: "追星时遇到 anti 造谣，让你非常生气，你会怎么做？", axis: "B", options: [
+    { text: "马上在微博号召，带着同担们一起去广场屠黑、控评！", val: 2 },
+    { text: "转发辟谣贴，顺便在自己的主页激情开麦吐槽。", val: 1 },
+    { text: "默默点赞真空反黑的教程，顺手卡黑举报，深藏功与名。", val: -1 },
+    { text: "边举报边默默生气，看真源的舞台平复心情，不理烂人。", val: -2 }
+  ]},
+  { text: "在演唱会现场，旁边坐着一个不认识的真知棒，你会？", axis: "B", options: [
+    { text: "主动搭话塞小零食，互加微信，半场下来已经感觉熟的差不多了！", val: 2 },
+    { text: "互相交换一下自制的无料饭制，简单聊几句他今天的造型。", val: 1 },
+    { text: "礼貌微笑点头，然后继续专注盯台上的小源。", val: -1 },
+    { text: "戴着口罩不摘，全程社恐，眼前只有真源和绿色的真字灯牌。", val: -2 }
+  ]},
+  { text: "你平时在社交平台（wb、xhs、dy...等）上产出的频率是？", axis: "B", options: [
+    { text: "高强度冲浪，每天发好几条，超爱跟评论区的同好互动。", val: 2 },
+    { text: "有重大物料或灵感时才会发，比较注重质量和主页氛围。", val: 1 },
+    { text: "偶尔发发，多半是自言自语，不在乎有没有人转赞评。", val: -1 },
+    { text: "几乎不发，我的账号就是个无情的点赞/收藏机器。", val: -2 }
+  ]},
+  { text: "看到真源深夜在练舞室的对镜拍，你发送的微博评论会是？", axis: "C", options: [
+    { text: "小源辛苦了TT 回去早些休息，身体健康最重要！", val: 2 },
+    { text: "呜呜呜呜真源。。但看到他为舞台这么拼，本人完全很欣慰吧！", val: 1 },
+    { text: "这张小张的对镜拍也太性感了，我先吻上去了你们随意^q^", val: -1 },
+    { text: "老公我爱你。", val: -3 }
+  ]},
+  { text: "如果真源接了一部戏，你最希望他演什么角色？", axis: "C", options: [
+    { text: "惹人怜爱的美强惨困境少年，看了占有欲大爆发。", val: 2 },
+    { text: "只要是他演的什么都行，我只负责看脸和舔屏。", val: 1 },
+    { text: "校园文里的温柔学长，或者是深情霸总，和我疯狂撒糖。", val: -1 },
+    { text: "搞事业的大男主，一路逆袭走上人生巅峰！", val: 0 }
+  ]},
+  { text: "小源今天发了一组特别可爱、带点委屈表情的自拍，你会？", axis: "C", options: [
+    { text: "哇啊啊啊宝宝！谁欺负你了我要揍他！！", val: 2 },
+    { text: "觉得他可爱到犯规，存下来当每天早上的治愈能量。", val: 1 },
+    { text: "立刻转发好几条微博尖叫ing", val: -1 },
+    { text: "张真源你不要随便钓我！这分明就是在对我撒娇！", val: -2 }
+  ]},
+  { text: "当别人问起你为什么喜欢张真源时，你最常挂在嘴边的是？", axis: "C", options: [
+    { text: "他是个特别踏实、努力又善良的小孩，值得最好的一切。", val: 2 },
+    { text: "他本身就很好呀，而且也长得帅身材好，苏感爆棚！", val: 1 },
+    { text: "他的业务能力绝了，唱歌跳舞全能，未来不可限量。", val: -1 },
+    { text: "没有理由，命中注定就是要当他的妻。", val: -2 }
+  ]},
+  { text: "如果要在身上挂一个追星小物件出街，你会选？", axis: "D", options: [
+    { text: "超大号的羊真真痛包和针织袋，或者极其引人注目的行李牌。", val: 2 },
+    { text: "印着张真源属性或真字的定制挂件，懂的一看就知道。", val: 1 },
+    { text: "只有绿色系的丝带或配件，或者很隐晦的概念徽章。", val: -1 },
+    { text: "会挂上之前真源戴过的同款手链或配饰，这样就很满足啦！", val: -2 }
+  ]},
+  { text: "你的社交软件的头像和背景通常是？", axis: "D", options: [
+    { text: "全套都是真源的自拍饭拍等等，恨不得让所有人知道我担是谁。", val: 2 },
+    { text: "头像是他，但背景可能比较正常，或者反过来。", val: 1 },
+    { text: "用应援色系的网图，或者真源的一个不露脸局部截图。", val: -1 },
+    { text: "完全看不出追星痕迹的小猫小狗或风景照 be like 呼安。（huan: ？)", val: -2 }
+  ]},
+  { text: "朋友或者同事问起你的周末计划，如果正好要去追星，你会怎么说？", axis: "D", options: [
+    { text: "我要去看我老公张真源啦！他最近超级火，给你看看照片！", val: 2 },
+    { text: "要去看一个艺人的线下活动。。。", val: 1 },
+    { text: "去外地看个演出/展。", val: -1 },
+    { text: "没啥事，就和朋友随便逛逛。", val: -2 }
+  ]},
+  { text: "如果你做了一份自己很满意的真源饭制，你会怎么处理？", axis: "D", options: [
+    { text: "拿到演唱会现场见同担就塞，顺带发超话让大家来领。", val: 2 },
+    { text: "在微博抽奖送给同好，希望大家都能来参与！", val: 1 },
+    { text: "只寄给自己玩得最好的几个追星诡秘们。", val: -1 },
+    { text: "自己收藏，摆在床头独自欣赏这份专属快乐。", val: -2 }
+  ]}
+];
+
+const resultsMap = {
+  "M_111": { name: "《Brave Heart》型战斗型全能守护者", desc: "带头冲锋陷阵的热血糖糖，跑线下/在线上追活动补充能量！在微博上也是十分活跃，充满力量地守护着真源的每个瞬间。", img: "./con.png" },
+  "M_110": { name: "《光影》型暖心糖糖", desc: "喜欢到演唱会或是真源的个人活动现场看本人，也喜欢认识同担，默默追随却坚定地陪着真源发光。", img: "./end.png" },
+  "M_101": { name: "《出渊》型坚持不懈硬核爱妻", desc: "不爱社交但线下必到！靠着不懈的坚持疯狂安利，拽酷又充满实力的硬核陪伴。", img: "./con.png" },
+  "M_100": { name: "《心桥》型温柔搭桥人", desc: "只要安静看着真源平安健康就好。不张扬地给予最长情的线下守候。", img: "./cry.png" },
+  "M_011": { name: "《靠近我》型大家必须吃我安利之糖", desc: "哪里有物料哪里就有我！！对真源的反差萌毫无抵抗力，彻底“认输”！", img: "./cry.png" },
+  "M_010": { name: "《逆光》型向阳生长纪录者", desc: "活跃于各个平台的产出爱妻。擅长把各种物料剪辑成各种想法，用产出把真源安利给全世界~", img: "./end.png" },
+  "M_001": { name: "《万花镜》型深藏不露事业粉", desc: "平时是没啥重大事情默默追星的小糖，但只要真源一需要打投、冲销量或数据的需求，立刻在微博爆发出超强的战斗力与爆肝能量。", img: "./end.png" },
+  "M_000": { name: "《镜花水月》型疗癒系糖糖", desc: "在自己的步调里默默陪伴。疲惫时看一眼微博动态或新物料就能瞬间回血，默默爱小源ing...", img: "./end.png" },
+  "W_111": { name: "《Someone Like You》型直球狂热爱妻", desc: "必须线下跑跑跑活动我冲冲冲！和其他爱妻宝宝们打成一片。敢于举着灯牌直呼老公/宝宝，给真源最直球的爱！", img: "./con.png" },
+  "W_110": { name: "《One Night》型浪漫氛围感爱妻", desc: "热衷线下见面，穿搭也有绿色系的小巧思，追求满足的线下活动体验。", img: "./con.png" },
+  "W_101": { name: "《爱在终局之前》型宿命感纯爱战神", desc: "勇敢冲现场，虽然不爱在社交平台上发言，但在现场看着他的眼神也是充满了宿命感，嗯，我还要继续追！", img: "./con.png" },
+  "W_100": { name: "《蝴蝶》型追光翩跹蝴蝶妻", desc: "安静地飞到线下只为看他一眼。内心戏很多，享受专属不被打扰的心动瞬间。", img: "./end.png" },
+  "W_011": { name: "《Kiss You Goodbye》型互联网活跃爱妻", desc: "在微博上会发一些宝宝老公我爱你呀，也会和其他爱妻一起尖叫一起嗨！自信又热情，恨不得让大家都知道自己的老公有多帅^q^。", img: "./end.png" },
+  "W_010": { name: "《Moonlight》型月下浪漫造梦师", desc: "热爱写文或画图产出，在平台上跟大家分享对真源的各种美好幻想，心思极度细腻温柔，用爱发电。", img: "./cry.png" },
+  "W_001": { name: "《年》型专属秘密守护者", desc: "喜欢自己追星，微博主页上全是对他的爱，觉得小源是自己专属的宝藏。", img: "./cry.png" },
+  "W_000": { name: "《月之浮想》型沉浸式幻梦糖", desc: "最喜欢戴上耳机听他的歌，在自己的世界里脑补各种情境，完全沉浸在与小源的宇宙里，浪漫地爱着他。", img: "./cry.png" }
+};
+
+let currentQ = 0, scores = { A: 0, B: 0, C: 0, D: 0 };
+const maxScore = 8, totalRange = 16;
+
+function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
+
+function startQuiz() {
+  shuffle(questions);
+  questions.forEach(q => shuffle(q.options));
+  document.getElementById('start-screen').classList.add('fade-out');
+  setTimeout(() => {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('quiz-screen').classList.remove('hidden');
+    showQuestion();
+  }, 400);
+}
+
+function showQuestion() {
+  if (currentQ >= questions.length) { calculateResult(); return; }
+  const wrapper = document.getElementById('quiz-content-wrapper');
+  wrapper.style.opacity = 0;
+  setTimeout(() => {
+    let q = questions[currentQ];
+    document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
+    document.getElementById('question-text').innerText = q.text;
+    document.getElementById('options-container').innerHTML = q.options.map(o => `<button class="btn" onclick="select('${q.axis}',${o.val})">${o.text}</button>`).join('');
+    wrapper.style.opacity = 1;
+  }, 300);
+}
+
+function select(axis, val) { scores[axis]+=val; currentQ++; showQuestion(); }
+
+function calculateResult() {
+  document.getElementById('quiz-screen').classList.add('fade-out');
+  setTimeout(() => {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+    let k = (scores.C>=0?'M_':'W_') + (scores.A>=0?'1':'0') + (scores.B>=0?'1':'0') + (scores.D>=0?'1':'0');
+    let r = resultsMap[k];
+    
+    document.getElementById('result-title').innerText = r.name;
+    document.getElementById('result-desc').innerText = r.desc;
+    document.getElementById('result-char-img').src = r.img;
+    
+    // 渲染带有不同颜色的彩色拉条
+    const dims = [
+      {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--morandi-blue)', bg:'#dce4eb'},
+      {id:'b', l:'外向er', r:'内向er', v:scores.B, color:'var(--morandi-purple)', bg:'#e3dceb'},
+      {id:'c', l:'心理属性', r:'生理属性', v:scores.C, color:'var(--morandi-pink)', bg:'#ebe3dc'},
+      {id:'d', l:'太阳属性', r:'月亮属性', v:scores.D, color:'var(--morandi-green)', bg:'#e8ebe6'}
+    ];
+    
+    document.getElementById('sliders-box').innerHTML = dims.map(d => `
+      <div class="slider-item">
+        <div class="slider-labels">
+          <span style="color:var(--text-main)">${d.l}</span>
+          <span style="color:var(--text-main)">${d.r}</span>
+        </div>
+        <div class="slider-bar" style="background:${d.bg}">
+          <div class="slider-fill" id="fill-${d.id}" style="background:${d.color}"></div>
+        </div>
+      </div>`).join('');
+      
+    dims.forEach(d => {
+      let p = Math.round(((d.v + maxScore)/totalRange) * 100);
+      setTimeout(() => {
+        const el = document.getElementById(`fill-${d.id}`);
+        if(el) el.style.width = p+'%';
+      }, 100);
+    });
+  }, 400);
+}
+</script>
+</body>
+</html>
