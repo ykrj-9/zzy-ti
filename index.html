@@ -285,33 +285,24 @@ const resultsMap = {
 let currentQ = 0, scores = { A: 0, B: 0, C: 0, D: 0 };
 let historyRecords = [];
 let tempSelection = null;
-const maxScore = 8, totalRange = 16;
 
 function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
 
 function startQuiz() {
   shuffle(questions);
-  questions.forEach(q => shuffle(q.options));
-  document.getElementById('start-screen').classList.add('fade-out');
-  setTimeout(() => {
-    document.getElementById('start-screen').classList.add('hidden');
-    document.getElementById('quiz-screen').classList.remove('hidden');
-    showQuestion();
-  }, 400);
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('quiz-screen').classList.remove('hidden');
+  showQuestion();
 }
 
 function showQuestion() {
   if (currentQ >= questions.length) { calculateResult(); return; }
   const wrapper = document.getElementById('quiz-content-wrapper');
-  const nextBtn = document.getElementById('next-action-btn');
-  const prevBtn = document.getElementById('prev-btn');
-  
   wrapper.style.opacity = 0;
-  nextBtn.classList.add('hidden');
+  document.getElementById('next-action-btn').classList.add('hidden');
   tempSelection = null;
 
-  if (currentQ > 0) prevBtn.classList.remove('hidden');
-  else prevBtn.classList.add('hidden');
+  document.getElementById('prev-btn').classList.toggle('hidden', currentQ === 0);
 
   setTimeout(() => {
     let q = questions[currentQ];
@@ -325,8 +316,7 @@ function showQuestion() {
 }
 
 function handleSelect(el, axis, val) {
-  const btns = document.querySelectorAll('.btn-option');
-  btns.forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
   tempSelection = { axis, val };
   document.getElementById('next-action-btn').classList.remove('hidden');
@@ -341,48 +331,40 @@ function goNext() {
 }
 
 function prevQuestion() {
-  if (currentQ <= 0 || historyRecords.length === 0) return;
+  if (currentQ <= 0) return;
   currentQ--;
-  let lastChoice = historyRecords.pop();
-  scores[lastChoice.axis] -= lastChoice.val;
+  let last = historyRecords.pop();
+  scores[last.axis] -= last.val;
   showQuestion();
 }
 
 function calculateResult() {
-  document.getElementById('quiz-screen').classList.add('fade-out');
-  setTimeout(() => {
-    document.getElementById('quiz-screen').classList.add('hidden');
-    document.getElementById('result-screen').classList.remove('hidden');
-    let k = (scores.C>=0?'M_':'W_') + (scores.A>=0?'1':'0') + (scores.B>=0?'1':'0') + (scores.D>=0?'1':'0');
-    let r = resultsMap[k];
-    
-    document.getElementById('result-title').innerText = r.name;
-    document.getElementById('result-desc').innerText = r.desc;
-    document.getElementById('result-char-img').src = r.img;
-    
-    const dims = [
-      {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--morandi-blue)', bg:'#dce4eb'},
+  document.getElementById('quiz-screen').classList.add('hidden');
+  document.getElementById('result-screen').classList.remove('hidden');
+  let k = (scores.C>=0?'M_':'W_') + (scores.A>=0?'1':'0') + (scores.B>=0?'1':'0') + (scores.D>=0?'1':'0');
+  let r = resultsMap[k];
+  document.getElementById('result-title').innerText = r.name;
+  document.getElementById('result-char-img').src = r.img;
+  document.getElementById('result-desc').innerText = r.desc;
+
+  const dims = [
+    {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--morandi-blue)', bg:'#dce4eb'},
       {id:'b', l:'外向er', r:'内向er', v:scores.B, color:'var(--morandi-purple)', bg:'#e3dceb'},
       {id:'c', l:'心理属性', r:'生理属性', v:scores.C, color:'var(--morandi-pink)', bg:'#ebe3dc'},
       {id:'d', l:'太阳属性', r:'月亮属性', v:scores.D, color:'var(--morandi-green)', bg:'#e8ebe6'}
     ];
-    
-    document.getElementById('sliders-box').innerHTML = dims.map(d => `
-      <div class="slider-item">
-        <div class="slider-labels"><span>${d.l}</span><span>${d.r}</span></div>
-        <div class="slider-bar" style="background:${d.bg}">
-          <div class="slider-fill" id="fill-${d.id}" style="background:${d.color}"></div>
-        </div>
-      </div>`).join('');
-      
-    dims.forEach(d => {
-      let p = Math.round(((d.v + maxScore)/totalRange) * 100);
-      setTimeout(() => {
-        const el = document.getElementById(`fill-${d.id}`);
-        if(el) el.style.width = p+'%';
-      }, 100);
-    });
-  }, 400);
+
+  
+  document.getElementById('sliders-box').innerHTML = dims.map(d => `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; font-size:11px;"><span>${d.l}</span><span>${d.r}</span></div>
+      <div class="slider-bar"><div id="fill-${d.id}" class="slider-fill" style="background:${d.color}"></div></div>
+    </div>`).join('');
+  
+  dims.forEach(d => {
+    let p = Math.round(((d.v + 8)/16) * 100);
+    setTimeout(() => { document.getElementById(`fill-${d.id}`).style.width = p+'%'; }, 100);
+  });
 }
 </script>
 </body>
