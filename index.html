@@ -46,16 +46,6 @@
     box-sizing: border-box;
   }
 
-  /* 首页淡入动画 */
-  @keyframes fadeUpIn {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  #start-screen {
-    animation: fadeUpIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
   .screen {
     transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
     opacity: 1;
@@ -71,7 +61,7 @@
   .hidden { display: none !important; }
 
   h1 { color: var(--morandi-dark); font-size: 20px; font-weight: 600; margin-bottom: 12px; }
-  h2 { font-size: 15px; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 24px; text-align: left; }
+  h2 { font-size: 15px; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 24px; }
   p { font-size: 13px; color: var(--text-light); line-height: 1.8; }
 
   .btn {
@@ -108,28 +98,7 @@
   
   .btn-primary:hover { background-color: var(--morandi-dark); }
 
-  /* 问答页顶部布局 */
-  .quiz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-
-  .btn-back {
-    background: transparent;
-    border: none;
-    color: var(--text-light);
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 0;
-    transition: color 0.3s;
-  }
-  
-  .btn-back:hover { color: var(--morandi-green); }
-
-  .progress { font-size: 12px; color: var(--morandi-green); font-weight: 500; }
+  .progress { font-size: 12px; color: var(--morandi-green); margin-bottom: 15px; font-weight: 500; }
   
   /* 图片通用样式 */
   .display-img {
@@ -173,27 +142,29 @@
 </head>
 <body>
 
+<!-- 开始界面 -->
 <div class="container screen" id="start-screen">
   <h1>测试你的 YUAN‧TI</h1>
+  <!-- 首页封面图：可在 GitHub 上传后将 src 改为 "./cover.jpg" -->
   <img id="main-cover-img" class="display-img" src="./cover.png" alt="张真源测验封面">
   <p>16题测出你是哪种追源人格！<br>看看你符合真源哪个歌曲/舞台的类型？</p>
   <button class="btn btn-primary" onclick="startQuiz()">开始测试</button>
 </div>
 
+<!-- 问答界面 -->
 <div class="container screen hidden" id="quiz-screen">
   <div id="quiz-content-wrapper" style="transition: opacity 0.3s;">
-    <div class="quiz-header">
-      <button id="prev-btn" class="btn-back hidden" onclick="prevQuestion()">上一题</button>
-      <div class="progress" id="progress-text">1 / 16</div>
-    </div>
+    <div class="progress" id="progress-text">1 / 16</div>
     <h2 id="question-text"></h2>
     <div id="options-container"></div>
   </div>
 </div>
 
+<!-- 结果界面 -->
 <div class="container screen hidden" id="result-screen">
   <div class="result-title-box">
     <p style="font-size: 13px; margin-bottom: 12px; color: var(--text-main);">你的专属追源人格是：</p>
+    <!-- 结果页人格图 -->
     <img id="result-char-img" class="display-img" src="" alt="人格形象图">
     <h1 id="result-title"></h1>
   </div>
@@ -207,6 +178,7 @@
   
   <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">再测一次</button>
 
+  <!-- 作者署名 -->
   <div class="author-footer">
     <p class="author-note">“非常感谢大家来参与这个源体(YUAN‧TI)的小测试！<br>这是一个很突发奇想的小网站<br>（其中最大功臣一定是我们的gemini老师。。）<br>也当作是小源的生日纪念礼物吧！<br><br>妳／你的源体是什么呢？欢迎发在评论区和其他爱妻宝宝们分享^o^<br>最后还是偷偷许愿一下：希望小源外务多多资源多多<br><br>多多进组！！！”</p>
     <p class="author-id">测试制作：weibo＠歪卡日記</p>
@@ -214,30 +186,31 @@
 </div>
 
 <script>
-// 題目資料 (維持簡體中文與飯圈用語)
+// 題目資料 
 const questions = [
   { text: "听说真源要在你的城市办演唱会，你的第一反应是？", axis: "A", options: [
     { text: "找代抢、做攻略，砸锅卖铁也要冲进内场见他！", val: 2 },
     { text: "自己设闹钟努力抢票，抢不到的话去场外感受氛围、拿无料也行。", val: 1 },
-    { text: "准时预约线上直播，在屏幕前也要有满满的仪式感。", val: -1 },
-    { text: "佛系等神仙站姐出神图和高清直拍，边刷微博边美美存图。", val: -2 }
+    { text: "开始规划预约线上直播，在屏幕前也要有满满的仪式感。", val: -1 },
+    { text: "就等当天神仙站姐出神图和高清直拍，边刷微博边美美存图。", val: -2 }
   ]},
-  { text: "看到首页有人发了真源公开外务的路透生图，你会？", axis: "A", options: [
+  { text: "看到首页有人发了真源公开活动的路透生图，你会？", axis: "A", options: [
     { text: "要不我现在就买张机票过去吧？感觉不去一定会后悔！", val: 2 },
-    { text: "仔细放大看他的穿搭和状态，想着下次见他自己要穿什么。", val: 1 },
+    { text: "一边思考下次活动会在哪里，一边想着下次见他自己要穿什么。", val: 1 },
     { text: "疯狂在各平台存图，并在微博上夸赞宝宝的状态！", val: -1 },
-    { text: "顺手点赞站姐的图频，在线上默默欣赏小张的美貌。", val: -2 }
+    { text: "刚好刷到，顺手点赞站姐的图频，在线上默默欣赏小张的美貌。", val: -2 }
   ]},
   { text: "对你来说，追真源的路上最让你有“参与感”的瞬间是？", axis: "A", options: [
     { text: "在台下举着灯牌，跟着全场合唱，大喊他的名字。", val: 2 },
-    { text: "拿着手幅和同好们在场馆外大合照，交换周边。", val: 1 },
+    { text: "参加爱妻举办的各种线下，和同担们一起玩耍的时候。", val: 1 },
     { text: "真源发博后，第一时间冲进评论区抢前排并成功被翻牌。", val: -1 },
     { text: "看到数据上涨，或者自己产出的安利向视频播放量破万。", val: -2 }
   ]},
   { text: "遇上恶劣天气或突发情况，但今天有真源的外务活动，你会？", axis: "A", options: [
     { text: "风雨无阻，穿好雨衣带好相机，只要他在我就在。", val: 2 },
-    { text: "犹豫一下，如果实在太恶劣或是无法排除的事情就放弃，转去其他平台蹲文字路透。", val: 0 },
-    { text: "挣扎了好久还是默默看着粉丝群的现场转播，边感叹今天是什么意思啊！！", val: -2 }
+    { text: "犹豫一下但还是选择勇敢前往！", val: 0 },
+    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }
+    { text: "挣扎了好久还是默默含泪打开手机看着微博的现场转播", val: -2 }
   ]},
   { text: "进了一个新的爱妻微信群，你通常是什么状态？", axis: "B", options: [
     { text: "社交悍匪，马上发表情包打招呼和大家打成一片！", val: 2 },
@@ -305,7 +278,7 @@ const questions = [
     { text: "去外地看个演出/展。", val: -1 },
     { text: "没啥事，就和朋友随便逛逛。", val: -2 }
   ]},
-  { text: "如果你做了一份超棒的真源饭制，你会怎么处理？", axis: "D", options: [
+  { text: "如果你做了一份自己很满意的真源饭制，你会怎么处理？", axis: "D", options: [
     { text: "拿到演唱会现场见同担就塞，顺带发超话让大家来领。", val: 2 },
     { text: "在微博抽奖送给同好，希望大家都能来参与！", val: 1 },
     { text: "只寄给自己玩得最好的几个追星诡秘们。", val: -1 },
@@ -315,12 +288,12 @@ const questions = [
 
 const resultsMap = {
   "M_111": { name: "《Brave Heart》型战斗型全能守护者", desc: "带头冲锋陷阵的热血糖糖，跑线下/在线上追活动补充能量！在微博上也是十分活跃，充满力量地守护着真源的每个瞬间。", img: "./con.png" },
-  "M_110": { name: "《光影》型暖心糖糖", desc: "喜欢到现场发放饭制周边，认识同担，默默追随却坚定地陪着真源发光。", img: "./end.png" },
+  "M_110": { name: "《光影》型暖心糖糖", desc: "喜欢到演唱会或是真源的个人活动现场看本人，也喜欢认识同担，默默追随却坚定地陪着真源发光。", img: "./end.png" },
   "M_101": { name: "《出渊》型坚持不懈硬核爱妻", desc: "不爱社交但线下必到！靠着不懈的坚持疯狂安利，拽酷又充满实力的硬核陪伴。", img: "./con.png" },
   "M_100": { name: "《心桥》型温柔搭桥人", desc: "只要安静看着真源平安健康就好。不张扬地给予最长情的线下守候。", img: "./cry.png" },
   "M_011": { name: "《靠近我》型大家必须吃我安利之糖", desc: "哪里有物料哪里就有我！！对真源的反差萌毫无抵抗力，彻底“认输”！", img: "./cry.png" },
   "M_010": { name: "《逆光》型向阳生长纪录者", desc: "活跃于各个平台的产出爱妻。擅长把各种物料剪辑成各种想法，用产出把真源安利给全世界~", img: "./end.png" },
-  "M_001": { name: "《万花镜》型深藏不露事业粉", desc: "平时是默默无闻的小糖，但只要真源一需要打投、冲销量或数据的需求，立刻在微博爆发出超强的战斗力与爆肝能量。", img: "./end.png" },
+  "M_001": { name: "《万花镜》型深藏不露事业粉", desc: "平时是没啥重大事情默默追星的小糖，但只要真源一需要打投、冲销量或数据的需求，立刻在微博爆发出超强的战斗力与爆肝能量。", img: "./end.png" },
   "M_000": { name: "《镜花水月》型疗癒系糖糖", desc: "在自己的步调里默默陪伴。疲惫时看一眼微博动态或新物料就能瞬间回血，默默爱小源ing...", img: "./end.png" },
   "W_111": { name: "《Someone Like You》型直球狂热爱妻", desc: "必须线下跑跑跑活动我冲冲冲！和其他爱妻宝宝们打成一片。敢于举着灯牌直呼老公/宝宝，给真源最直球的爱！", img: "./con.png" },
   "W_110": { name: "《One Night》型浪漫氛围感爱妻", desc: "热衷线下见面，穿搭也有绿色系的小巧思，追求满足的线下活动体验。", img: "./con.png" },
@@ -333,7 +306,6 @@ const resultsMap = {
 };
 
 let currentQ = 0, scores = { A: 0, B: 0, C: 0, D: 0 };
-let historyRecords = []; // 用于记录每道题的选择，方便返回上一题时扣除对应分数
 const maxScore = 8, totalRange = 16;
 
 function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
@@ -341,7 +313,6 @@ function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.
 function startQuiz() {
   shuffle(questions);
   questions.forEach(q => shuffle(q.options));
-  historyRecords = []; // 重置历史记录
   document.getElementById('start-screen').classList.add('fade-out');
   setTimeout(() => {
     document.getElementById('start-screen').classList.add('hidden');
@@ -354,15 +325,6 @@ function showQuestion() {
   if (currentQ >= questions.length) { calculateResult(); return; }
   const wrapper = document.getElementById('quiz-content-wrapper');
   wrapper.style.opacity = 0;
-  
-  // 控制“上一题”按钮的显示与隐藏
-  const prevBtn = document.getElementById('prev-btn');
-  if (currentQ > 0) {
-    prevBtn.classList.remove('hidden');
-  } else {
-    prevBtn.classList.add('hidden');
-  }
-
   setTimeout(() => {
     let q = questions[currentQ];
     document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
@@ -372,20 +334,7 @@ function showQuestion() {
   }, 300);
 }
 
-function select(axis, val) { 
-  historyRecords.push({ axis: axis, val: val }); // 记录选择
-  scores[axis] += val; 
-  currentQ++; 
-  showQuestion(); 
-}
-
-function prevQuestion() {
-  if (currentQ <= 0 || historyRecords.length === 0) return;
-  currentQ--; // 题目序号减1
-  let lastChoice = historyRecords.pop(); // 取出上一次的选择记录
-  scores[lastChoice.axis] -= lastChoice.val; // 从总分中扣除对应分数
-  showQuestion(); // 重新显示题目
-}
+function select(axis, val) { scores[axis]+=val; currentQ++; showQuestion(); }
 
 function calculateResult() {
   document.getElementById('quiz-screen').classList.add('fade-out');
