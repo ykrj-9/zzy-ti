@@ -12,7 +12,6 @@
     --morandi-pink: #d9c4c1;       /* 莫兰迪粉：C维度 */
     --morandi-blue: #b2c2d1;       /* 莫兰迪蓝：A维度 */
     --morandi-purple: #c5b2d1;     /* 莫兰迪紫：B维度 */
-    --morandi-yellow: #d1c8b2;     /* 莫兰迪黄：D维度辅助 */
     --bg-color: #f5f7f6;           /* 整体背景 */
     --text-main: #5c6660;          /* 主要文字色 */
     --text-light: #8b9991;         /* 次要文字色 */
@@ -44,27 +43,25 @@
     text-align: center;
     position: relative;
     box-sizing: border-box;
+    /* 首页淡入动画 */
+    animation: fadeIn 0.8s ease-out forwards;
   }
 
-  .screen {
-    transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .fade-out {
-    opacity: 0 !important;
-    transform: translateY(8px) !important;
-    pointer-events: none;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
+  .screen { transition: opacity var(--transition-speed) ease-in-out; }
   .hidden { display: none !important; }
+  .fade-out { opacity: 0 !important; pointer-events: none; }
 
   h1 { color: var(--morandi-dark); font-size: 20px; font-weight: 600; margin-bottom: 12px; }
-  h2 { font-size: 15px; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 24px; }
+  h2 { font-size: 15px; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 24px; text-align: left; }
   p { font-size: 13px; color: var(--text-light); line-height: 1.8; }
 
-  .btn {
+  /* 选项按钮样式 */
+  .btn-option {
     background-color: var(--card-bg);
     color: var(--text-main);
     border: 1px solid var(--morandi-green);
@@ -74,17 +71,35 @@
     width: 100%;
     font-size: 13px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     text-align: left;
     line-height: 1.4;
   }
 
-  .btn:hover { 
-    background-color: var(--morandi-green); 
+  .btn-option:hover { background-color: var(--morandi-light); }
+  .btn-option.selected {
+    background-color: var(--morandi-green);
     color: #fff;
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(159, 179, 168, 0.2);
   }
+
+  /* 独立下一步按钮 - 绿色圆角 */
+  .btn-next-action {
+    background-color: var(--morandi-green);
+    color: #fff;
+    border: none;
+    padding: 14px 20px;
+    margin-top: 20px;
+    border-radius: 30px;
+    width: 80%;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(159, 179, 168, 0.3);
+  }
+
+  .btn-next-action:hover { background-color: var(--morandi-dark); transform: translateY(-2px); }
 
   .btn-primary {
     background-color: var(--morandi-green);
@@ -94,21 +109,37 @@
     font-weight: 500;
     margin-top: 20px;
     padding: 14px 20px;
+    border-radius: 6px;
+    width: 100%;
+    cursor: pointer;
   }
-  
-  .btn-primary:hover { background-color: var(--morandi-dark); }
 
-  .progress { font-size: 12px; color: var(--morandi-green); margin-bottom: 15px; font-weight: 500; }
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+  }
+
+  .progress { font-size: 12px; color: var(--morandi-green); font-weight: 500; }
   
-  /* 图片通用样式 */
   .display-img {
     width: 100%;
-    max-height: auto;
+    height: auto;
     object-fit: contain;
     border-radius: 8px;
     margin-bottom: 20px;
     background-color: var(--morandi-light);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
 
   .result-title-box {
@@ -118,22 +149,6 @@
     border-radius: 12px;
     margin-bottom: 25px;
   }
-
-  /* 首頁與容器的淡入動畫 */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 讓容器加載時自帶淡入 */
-.container {
-  animation: fadeIn 0.8s ease-out;
-}
-
-/* 題目切換時的過渡動畫 */
-#quiz-content-wrapper {
-  transition: opacity 0.4s ease-in-out;
-}
   
   .result-title-box h1 { margin: 10px 0 0 0; font-size: 24px; color: var(--morandi-dark); font-weight: bold; }
 
@@ -147,13 +162,6 @@
     text-align: left; font-size: 13px; line-height: 1.7; padding: 16px;
     background: var(--morandi-light); border-radius: 8px; color: var(--morandi-dark);
   }
-
-  .author-footer {
-    margin-top: 30px; padding-top: 15px;
-    border-top: 1px dashed var(--morandi-green);
-  }
-  .author-note { font-size: 11px; color: var(--text-light); font-style: italic; margin-bottom: 5px; }
-  .author-id { font-size: 12px; color: var(--morandi-dark); font-weight: bold; }
 </style>
 </head>
 <body>
@@ -298,12 +306,12 @@ const questions = [
 
 const resultsMap = {
   "M_111": { name: "《Brave Heart》型战斗型全能守护者", desc: "带头冲锋陷阵的热血糖糖，跑线下/在线上追活动补充能量！在微博上也是十分活跃，充满力量地守护着真源的每个瞬间。", img: "./con.png" },
-  "M_110": { name: "《光影》型暖心糖糖", desc: "喜欢到演唱会或是真源的个人活动现场看本人，也喜欢认识同担，默默追随却坚定地陪着真源发光。", img: "./end.png" },
+  "M_110": { name: "《光影》型暖心糖糖", desc: "喜欢到演唱会或是真源的个人活动现场看本人，默默追随却坚定地陪着真源发光。", img: "./end.png" },
   "M_101": { name: "《出渊》型坚持不懈硬核爱妻", desc: "不爱社交但线下必到！靠着不懈的坚持疯狂安利，拽酷又充满实力的硬核陪伴。", img: "./con.png" },
-  "M_100": { name: "《心桥》型温柔搭桥人", desc: "只要安静看着真源平安健康就好。不张扬地给予最长情的线下守候。", img: "./cry.png" },
-  "M_011": { name: "《靠近我》型大家必须吃我安利之糖", desc: "哪里有物料哪里就有我！！对真源的反差萌毫无抵抗力，彻底“认输”！", img: "./cry.png" },
+  "M_100": { name: "《心桥》型温柔搭桥人", desc: "只要安静看着真源平安健康就好。不张扬地给予最长情的守候。", img: "./cry.png" },
+  "M_011": { name: "《靠近我》型大家必须吃我安利之糖", desc: "哪里有物料哪里就有我！！对真源的反差萌毫无抵抗力，彻底认输！", img: "./cry.png" },
   "M_010": { name: "《逆光》型向阳生长纪录者", desc: "活跃于各个平台的产出爱妻。擅长把各种物料剪辑成各种想法，用产出把真源安利给全世界~", img: "./end.png" },
-  "M_001": { name: "《万花镜》型深藏不露事业粉", desc: "平时是没啥重大事情默默追星的小糖，但只要真源一需要打投、冲销量或数据的需求，立刻在微博爆发出超强的战斗力与爆肝能量。", img: "./end.png" },
+  "M_001": { name: "《万花镜》型深藏不露事业粉", desc: "平时是没啥重大事情默默追星的小糖，但只要真源一需要打投、冲销量或数据的需求，立刻在微博爆发出超强的战斗力能量！", img: "./end.png" },
   "M_000": { name: "《镜花水月》型疗癒系糖糖", desc: "在自己的步调里默默陪伴。疲惫时看一眼微博动态或新物料就能瞬间回血，默默爱小源ing...", img: "./end.png" },
   "W_111": { name: "《Someone Like You》型直球狂热爱妻", desc: "必须线下跑跑跑活动我冲冲冲！和其他爱妻宝宝们打成一片。敢于举着灯牌直呼老公/宝宝，给真源最直球的爱！", img: "./con.png" },
   "W_110": { name: "《One Night》型浪漫氛围感爱妻", desc: "热衷线下见面，穿搭也有绿色系的小巧思，追求满足的线下活动体验。", img: "./con.png" },
@@ -316,6 +324,8 @@ const resultsMap = {
 };
 
 let currentQ = 0, scores = { A: 0, B: 0, C: 0, D: 0 };
+let historyRecords = [];
+let tempSelection = null;
 const maxScore = 8, totalRange = 16;
 
 function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
@@ -327,42 +337,57 @@ function startQuiz() {
   setTimeout(() => {
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('quiz-screen').classList.remove('hidden');
-function showQuestion() {
-  if (currentQ >= questions.length) { calculateResult(); return; }
-  const wrapper = document.getElementById('quiz-content-wrapper');
-  
-  // 先讓透明度歸零
-  wrapper.style.opacity = 0;
-
-  setTimeout(() => {
-    let q = questions[currentQ];
-    document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
-    document.getElementById('question-text').innerText = q.text;
-    document.getElementById('options-container').innerHTML = q.options.map(o => 
-      `<button class="btn" onclick="select('${q.axis}',${o.val})">${o.text}</button>`
-    ).join('');
-    
-    // 內容更換後，再恢復透明度實現淡入
-    wrapper.style.opacity = 1;
-  }, 300); // 這裡的延遲要略短於 CSS 的 transition 時間
-}
+    showQuestion();
   }, 400);
 }
 
 function showQuestion() {
   if (currentQ >= questions.length) { calculateResult(); return; }
   const wrapper = document.getElementById('quiz-content-wrapper');
+  const nextBtn = document.getElementById('next-action-btn');
+  const prevBtn = document.getElementById('prev-btn');
+  
   wrapper.style.opacity = 0;
+  nextBtn.classList.add('hidden');
+  tempSelection = null;
+
+  if (currentQ > 0) prevBtn.classList.remove('hidden');
+  else prevBtn.classList.add('hidden');
+
   setTimeout(() => {
     let q = questions[currentQ];
     document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
     document.getElementById('question-text').innerText = q.text;
-    document.getElementById('options-container').innerHTML = q.options.map(o => `<button class="btn" onclick="select('${q.axis}',${o.val})">${o.text}</button>`).join('');
+    document.getElementById('options-container').innerHTML = q.options.map(o => 
+      `<button class="btn-option" onclick="handleSelect(this, '${q.axis}', ${o.val})">${o.text}</button>`
+    ).join('');
     wrapper.style.opacity = 1;
   }, 300);
 }
 
-function select(axis, val) { scores[axis]+=val; currentQ++; showQuestion(); }
+function handleSelect(el, axis, val) {
+  const btns = document.querySelectorAll('.btn-option');
+  btns.forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  tempSelection = { axis, val };
+  document.getElementById('next-action-btn').classList.remove('hidden');
+}
+
+function goNext() {
+  if (!tempSelection) return;
+  historyRecords.push(tempSelection);
+  scores[tempSelection.axis] += tempSelection.val;
+  currentQ++;
+  showQuestion();
+}
+
+function prevQuestion() {
+  if (currentQ <= 0 || historyRecords.length === 0) return;
+  currentQ--;
+  let lastChoice = historyRecords.pop();
+  scores[lastChoice.axis] -= lastChoice.val;
+  showQuestion();
+}
 
 function calculateResult() {
   document.getElementById('quiz-screen').classList.add('fade-out');
@@ -376,7 +401,6 @@ function calculateResult() {
     document.getElementById('result-desc').innerText = r.desc;
     document.getElementById('result-char-img').src = r.img;
     
-    // 渲染带有不同颜色的彩色拉条
     const dims = [
       {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--morandi-blue)', bg:'#dce4eb'},
       {id:'b', l:'外向er', r:'内向er', v:scores.B, color:'var(--morandi-purple)', bg:'#e3dceb'},
@@ -386,10 +410,7 @@ function calculateResult() {
     
     document.getElementById('sliders-box').innerHTML = dims.map(d => `
       <div class="slider-item">
-        <div class="slider-labels">
-          <span style="color:var(--text-main)">${d.l}</span>
-          <span style="color:var(--text-main)">${d.r}</span>
-        </div>
+        <div class="slider-labels"><span>${d.l}</span><span>${d.r}</span></div>
         <div class="slider-bar" style="background:${d.bg}">
           <div class="slider-fill" id="fill-${d.id}" style="background:${d.color}"></div>
         </div>
