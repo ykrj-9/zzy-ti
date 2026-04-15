@@ -6,21 +6,20 @@
 <title>测试你的YUAN·TI</title>
 <style>
   :root {
-    --morandi-green: #9fb3a8;      /* 主色：莫兰迪水玉青 */
-    --morandi-dark: #7b9084;       /* 深色：悬停与强调 */
-    --morandi-light: #e6ebe8;      /* 浅色：背景辅助 */
-    --morandi-pink: #d9c4c1;       /* 莫兰迪粉：C维度 */
-    --morandi-blue: #b2c2d1;       /* 莫兰迪蓝：A维度 */
-    --morandi-purple: #c5b2d1;     /* 莫兰迪紫：B维度 */
-    --bg-color: #f5f7f6;           /* 整体背景 */
-    --text-main: #5c6660;          /* 主要文字色 */
-    --text-light: #8b9991;         /* 次要文字色 */
+    --morandi-green: #9fb3a8;
+    --morandi-dark: #7b9084;
+    --morandi-light: #e6ebe8;
+    --morandi-blue: #b2c2d1;
+    --morandi-purple: #c5b2d1;
+    --bg-color: #f5f7f6;
+    --text-main: #5c6660;
+    --text-light: #8b9991;
     --card-bg: #ffffff;
     --transition-speed: 0.4s;
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
     margin: 0;
@@ -30,9 +29,9 @@
     align-items: center;
     min-height: 100vh;
     font-size: 14px;
-    letter-spacing: 0.5px;
   }
 
+  /* 容器與動畫 */
   .container {
     background: var(--card-bg);
     border-radius: 12px;
@@ -43,24 +42,21 @@
     text-align: center;
     position: relative;
     box-sizing: border-box;
-    /* 首页淡入动画 */
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeInContainer 0.8s ease-out;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+  @keyframes fadeInContainer {
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .screen { transition: opacity var(--transition-speed) ease-in-out; }
+  .screen { transition: opacity var(--transition-speed); }
   .hidden { display: none !important; }
-  .fade-out { opacity: 0 !important; pointer-events: none; }
 
-  h1 { color: var(--morandi-dark); font-size: 20px; font-weight: 600; margin-bottom: 12px; }
-  h2 { font-size: 15px; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 24px; text-align: left; }
-  p { font-size: 13px; color: var(--text-light); line-height: 1.8; }
-
-  /* 选项按钮样式 */
+  h1 { color: var(--morandi-dark); font-size: 20px; margin-bottom: 12px; }
+  h2 { font-size: 15px; font-weight: 500; line-height: 1.6; margin-bottom: 24px; text-align: left; }
+  
+  /* 选项样式 */
   .btn-option {
     background-color: var(--card-bg);
     color: var(--text-main);
@@ -71,9 +67,9 @@
     width: 100%;
     font-size: 13px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
     text-align: left;
-    line-height: 1.4;
+    display: block;
   }
 
   .btn-option:hover { background-color: var(--morandi-light); }
@@ -83,7 +79,7 @@
     box-shadow: 0 4px 12px rgba(159, 179, 168, 0.2);
   }
 
-  /* 独立下一步按钮 - 绿色圆角 */
+  /* 绿色圆角下一题按钮 */
   .btn-next-action {
     background-color: var(--morandi-green);
     color: #fff;
@@ -95,23 +91,18 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(159, 179, 168, 0.3);
   }
-
-  .btn-next-action:hover { background-color: var(--morandi-dark); transform: translateY(-2px); }
 
   .btn-primary {
     background-color: var(--morandi-green);
     color: #fff;
-    text-align: center;
     border: none;
-    font-weight: 500;
-    margin-top: 20px;
     padding: 14px 20px;
     border-radius: 6px;
     width: 100%;
     cursor: pointer;
+    margin-top: 20px;
   }
 
   .quiz-header {
@@ -132,74 +123,42 @@
   }
 
   .progress { font-size: 12px; color: var(--morandi-green); font-weight: 500; }
-  
-  .display-img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    background-color: var(--morandi-light);
-  }
+  .display-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
 
-  .result-title-box {
-    background: rgba(159, 179, 168, 0.1);
-    border: 2px solid var(--morandi-green);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-  }
-  
-  .result-title-box h1 { margin: 10px 0 0 0; font-size: 24px; color: var(--morandi-dark); font-weight: bold; }
-
-  .slider-container { margin-bottom: 25px; text-align: left; }
-  .slider-item { margin-bottom: 16px; }
-  .slider-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; font-weight: 600; }
-  .slider-bar { width: 100%; height: 10px; border-radius: 5px; overflow: hidden; position: relative; background: #eee; }
-  .slider-fill { height: 100%; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); width: 0%; }
-
-  .result-desc {
-    text-align: left; font-size: 13px; line-height: 1.7; padding: 16px;
-    background: var(--morandi-light); border-radius: 8px; color: var(--morandi-dark);
-  }
+  .slider-bar { width: 100%; height: 10px; border-radius: 5px; background: #eee; overflow: hidden; margin-top: 5px; }
+  .slider-fill { height: 100%; width: 0%; transition: width 1s; }
 </style>
 </head>
 <body>
 
-<div class="container screen" id="start-screen">
+<div class="container" id="start-screen">
   <h1>测试你的 YUAN‧TI</h1>
-  <img id="main-cover-img" class="display-img" src="./cover.png" alt="张真源测验封面">
-  <p>16题测出你是哪种追源人格！<br>看看你符合真源哪个歌曲/舞台的类型？</p>
-  <button class="btn btn-primary" onclick="startQuiz()">开始测试</button>
+  <img class="display-img" src="./cover.png" alt="封面">
+  <p style="font-size: 13px; color: var(--text-light);">16题测出你是哪种追源人格！<br>看看你符合真源哪个舞台的类型？</p>
+  <button class="btn-primary" onclick="startQuiz()">开始测试</button>
 </div>
 
-<div class="container screen hidden" id="quiz-screen">
+<div class="container hidden" id="quiz-screen">
   <div id="quiz-content-wrapper" style="transition: opacity 0.3s;">
-    <div class="progress" id="progress-text">1 / 16</div>
+    <div class="quiz-header">
+      <button id="prev-btn" class="btn-back hidden" onclick="prevQuestion()">上一题</button>
+      <div class="progress" id="progress-text">1 / 16</div>
+    </div>
     <h2 id="question-text"></h2>
     <div id="options-container"></div>
+    <button id="next-action-btn" class="btn-next-action hidden" onclick="goNext()">下一题</button>
   </div>
 </div>
 
-<div class="container screen hidden" id="result-screen">
-  <div class="result-title-box">
-    <p style="font-size: 13px; margin-bottom: 12px; color: var(--text-main);">你的专属追源人格是：</p>
-    <img id="result-char-img" class="display-img" src="" alt="人格形象图">
-    <h1 id="result-title"></h1>
-  </div>
-
-  <div class="slider-container">
-    <p style="margin-bottom: 15px; color: var(--text-main); font-weight: 600; font-size: 13px;">四大维度属性占比</p>
-    <div id="sliders-box"></div>
-  </div>
-
-  <div class="result-desc" id="result-desc"></div>
-  
-  <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">再测一次</button>
-
+<div class="container hidden" id="result-screen">
+  <h1 id="result-title" style="font-size: 24px;"></h1>
+  <img id="result-char-img" class="display-img" src="">
+  <div id="sliders-box" style="text-align: left; margin: 20px 0;"></div>
+  <p id="result-desc" style="text-align: left; background: var(--morandi-light); padding: 15px; border-radius: 8px;"></p>
+  <button class="btn-primary" onclick="location.reload()">再测一次</button>
   <div class="author-footer">
     <p class="author-note">“非常感谢大家来参与这个源体(YUAN‧TI)的小测试！<br>这是一个很突发奇想的小网站<br>（其中最大功臣一定是我们的gemini老师。。）<br>也当作是小源的生日纪念礼物吧！<br><br>妳／你的源体是什么呢？欢迎发在评论区和其他爱妻宝宝们分享^o^<br>最后还是偷偷许愿一下：希望小源外务多多资源多多<br><br>多多进组！！！”</p>
-    <p class="author-id">测试制作：weibo＠歪卡日記</p>
+  <p style="font-size: 11px; margin-top: 20px; color: var(--text-light);">测试制作：weibo＠歪卡日記</p>
   </div>
 </div>
 
