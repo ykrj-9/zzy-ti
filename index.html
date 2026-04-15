@@ -118,6 +118,22 @@
     border-radius: 12px;
     margin-bottom: 25px;
   }
+
+  /* 首頁與容器的淡入動畫 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 讓容器加載時自帶淡入 */
+.container {
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* 題目切換時的過渡動畫 */
+#quiz-content-wrapper {
+  transition: opacity 0.4s ease-in-out;
+}
   
   .result-title-box h1 { margin: 10px 0 0 0; font-size: 24px; color: var(--morandi-dark); font-weight: bold; }
 
@@ -311,7 +327,25 @@ function startQuiz() {
   setTimeout(() => {
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('quiz-screen').classList.remove('hidden');
-    showQuestion();
+function showQuestion() {
+  if (currentQ >= questions.length) { calculateResult(); return; }
+  const wrapper = document.getElementById('quiz-content-wrapper');
+  
+  // 先讓透明度歸零
+  wrapper.style.opacity = 0;
+
+  setTimeout(() => {
+    let q = questions[currentQ];
+    document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
+    document.getElementById('question-text').innerText = q.text;
+    document.getElementById('options-container').innerHTML = q.options.map(o => 
+      `<button class="btn" onclick="select('${q.axis}',${o.val})">${o.text}</button>`
+    ).join('');
+    
+    // 內容更換後，再恢復透明度實現淡入
+    wrapper.style.opacity = 1;
+  }, 300); // 這裡的延遲要略短於 CSS 的 transition 時間
+}
   }, 400);
 }
 
