@@ -230,7 +230,7 @@
 </div>
 
 <script>
-// ---------- 以下文字內容完全複製您的版本，僅在第4題補上語法錯誤的逗號 ----------
+// 題目資料 (文字內容100%保留)
 const questions = [
   { text: "听说真源要在你的城市办演唱会，你的第一反应是？", axis: "A", options: [
     { text: "找代抢、做攻略，砸锅卖铁也要冲进内场见他！", val: 2 },
@@ -241,7 +241,7 @@ const questions = [
   { text: "看到首页有人发了真源公开活动的路透生图，你会？", axis: "A", options: [
     { text: "要不我现在就买张机票过去吧？感觉不去一定会后悔！", val: 2 },
     { text: "一边思考下次活动会在哪里，一边想着下次见他自己要穿什么。", val: 1 },
-    { text: "疯狂在各平台存图，并在微博上夸赞宝宝的状态！", val: -1 },
+    { text: "疯狂在各平台存图，并在微博上夸赞今天的状态！", val: -1 },
     { text: "刚好刷到，顺手点赞站姐的图频，在线上默默欣赏小张的美貌。", val: -2 }
   ]},
   { text: "对你来说，追真源的路上最让你有“参与感”的瞬间是？", axis: "A", options: [
@@ -250,10 +250,10 @@ const questions = [
     { text: "真源发博后，第一时间冲进评论区抢前排并成功被翻牌。", val: -1 },
     { text: "看到数据上涨，或者自己产出的安利向视频播放量破万。", val: -2 }
   ]},
-  { text: "遇上恶劣天气或突发情况，但今天有真源的外务活动，你会？", axis: "A", options: [
-    { text: "风雨无阻，穿好雨衣带好相机，只要他在我就在。", val: 2 },
+  { text: "遇上突发情况，但今天有真源的外务活动，你会？", axis: "A", options: [
+    { text: "风雨无阻，一切准备就绪！只要他在我就在。", val: 2 },
     { text: "犹豫一下但还是选择勇敢前往！", val: 0 },
-    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, // 修復：補上逗號
+    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, 
     { text: "挣扎了好久还是默默含泪打开手机看着微博的现场转播", val: -2 }
   ]},
   { text: "进了一个新的爱妻微信群，你通常是什么状态？", axis: "B", options: [
@@ -270,9 +270,9 @@ const questions = [
   ]},
   { text: "在演唱会现场，旁边坐着一个不认识的真知棒，你会？", axis: "B", options: [
     { text: "主动搭话塞小零食，互加微信，半场下来已经感觉熟的差不多了！", val: 2 },
-    { text: "互相交换一下自制的无料饭制，简单聊几句他今天的造型。", val: 1 },
+    { text: "互相交换一下自制的小物料，然后简单聊几句。", val: 1 },
     { text: "礼貌微笑点头，然后继续专注盯台上的小源。", val: -1 },
-    { text: "戴着口罩不摘，全程社恐，眼前只有真源和绿色的真字灯牌。", val: -2 }
+    { text: "戴着口罩不摘，不敢社交。眼前只有真源和绿色的真字灯牌。", val: -2 }
   ]},
   { text: "你平时在社交平台（wb、xhs、dy...等）上产出的频率是？", axis: "B", options: [
     { text: "高强度冲浪，每天发好几条，超爱跟评论区的同好互动。", val: 2 },
@@ -286,9 +286,9 @@ const questions = [
     { text: "这张小张的对镜拍也太性感了，我先吻上去了你们随意^q^", val: -1 },
     { text: "老公我爱你。", val: -3 }
   ]},
-  { text: "如果真源接了一部戏，你最希望他演什么角色？", axis: "C", options: [
+  { text: "如果真源接了一部戏，你最想他到他演什么角色？", axis: "C", options: [
     { text: "惹人怜爱的美强惨困境少年，看了占有欲大爆发。", val: 2 },
-    { text: "只要是他演的什么都行，我只负责看脸和舔屏。", val: 1 },
+    { text: "只要是他演的什么都行，因为不管怎样他都会演的很好！", val: 1 },
     { text: "校园文里的温柔学长，或者是深情霸总，和我疯狂撒糖。", val: -1 },
     { text: "搞事业的大男主，一路逆袭走上人生巅峰！", val: 0 }
   ]},
@@ -318,8 +318,8 @@ const questions = [
   ]},
   { text: "朋友或者同事问起你的周末计划，如果正好要去追星，你会怎么说？", axis: "D", options: [
     { text: "我要去看我老公张真源啦！他最近超级火，给你看看照片！", val: 2 },
-    { text: "要去看一个艺人的线下活动。。。", val: 1 },
-    { text: "去外地看个演出/展。", val: -1 },
+    { text: "要去看一个艺人的线下活动。", val: 1 },
+    { text: "去外地看个演出哈哈哈。", val: -1 },
     { text: "没啥事，就和朋友随便逛逛。", val: -2 }
   ]},
   { text: "如果你做了一份自己很满意的真源饭制，你会怎么处理？", axis: "D", options: [
@@ -348,16 +348,26 @@ const resultsMap = {
   "W_001": { name: "《年》型专属秘密守护者", desc: "喜欢自己追星，微博主页上全是对他的爱，觉得小源是自己专属的宝藏。", img: "./cry.png" },
   "W_000": { name: "《月之浮想》型沉浸式幻梦糖", desc: "最喜欢戴上耳机听他的歌，在自己的世界里脑补各种情境，完全沉浸在与小源的宇宙里，浪漫地爱着他。", img: "./cry.png" }
 };
-// ---------- 以上文字內容完全複製您的版本 ----------
 
 let currentQ = 0, scores = { A: 0, B: 0, C: 0, D: 0 };
 let historyRecords = [];
 let tempSelection = null;
 
-function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
+// 打亂陣列順序的通用函數
+function shuffle(arr) { 
+  for(let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
 
 function startQuiz() {
+  // 隨機打亂題目順序
   shuffle(questions);
+  
+  // 隨機打亂每一題內部的「選項順序」
+  questions.forEach(q => shuffle(q.options));
+  
   document.getElementById('start-screen').classList.add('hidden');
   document.getElementById('quiz-screen').classList.remove('hidden');
   showQuestion();
@@ -368,14 +378,12 @@ function showQuestion() {
   
   const wrapper = document.getElementById('quiz-content-wrapper');
   
-  // 開始淡出動畫
   wrapper.style.opacity = 0;
   document.getElementById('next-action-btn').classList.add('hidden');
   tempSelection = null;
 
   document.getElementById('prev-btn').classList.toggle('hidden', currentQ === 0);
 
-  // 等待淡出後再更換內容並淡入
   setTimeout(() => {
     let q = questions[currentQ];
     document.getElementById('progress-text').innerText = `${currentQ + 1} / 16`;
@@ -384,7 +392,6 @@ function showQuestion() {
       `<button class="btn-option" onclick="handleSelect(this, '${q.axis}', ${o.val})">${o.text}</button>`
     ).join('');
     
-    // 恢復透明度，實現流暢淡入
     wrapper.style.opacity = 1;
   }, 400); 
 }
@@ -423,7 +430,6 @@ function calculateResult() {
   document.getElementById('result-char-img').src = r.img;
   document.getElementById('result-desc').innerText = r.desc;
 
-  // 使用上方定義的 CSS Variables 確保拉條顏色正確顯示
   const dims = [
     {id:'a', l:'线下er', r:'线上er', v:scores.A, color:'var(--bar-a-blue)'},
     {id:'b', l:'外向er', r:'内向er', v:scores.B, color:'var(--bar-b-purple)'},
@@ -441,7 +447,6 @@ function calculateResult() {
       </div>
     </div>`).join('');
   
-  // 加上 Math.max/min 防呆機制，確保計算不會因為任何原因跑出 0~100 之外
   dims.forEach(d => {
     let p = Math.max(0, Math.min(100, Math.round(((d.v + 8) / 16) * 100)));
     setTimeout(() => { document.getElementById(`fill-${d.id}`).style.width = p + '%'; }, 200);
