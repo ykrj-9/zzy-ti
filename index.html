@@ -186,8 +186,8 @@ const questions = [
   { text: "遇上恶劣天气或突发情况，但今天有真源的外务活动，你会？", axis: "A", options: [
     { text: "风雨无阻，穿好雨衣带好相机，只要他在我就在。", val: 2 },
     { text: "犹豫一下但还是选择勇敢前往！", val: 0 },
-    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, // 補上逗號
-    { text: "挣扎了好久还是默默含泪打开手机看着微博的现场转播", val: -2 }
+    { text: "在微博抱怨怎么会突然发生这种情况，试着找解决办法中", val: -1 }, 
+    { text: "挣扎了好久还是默默含泪打开手机看着微博的现场爱妻转播", val: -2 }
   ]},
   { text: "进了一个新的爱妻微信群，你通常是什么状态？", axis: "B", options: [
     { text: "社交悍匪，马上发表情包打招呼和大家打成一片！", val: 2 },
@@ -353,7 +353,6 @@ function calculateResult() {
       {id:'c', l:'心理属性', r:'生理属性', v:scores.C, color:'var(--morandi-pink)', bg:'#ebe3dc'},
       {id:'d', l:'太阳属性', r:'月亮属性', v:scores.D, color:'var(--morandi-green)', bg:'#e8ebe6'}
     ];
-
   
   document.getElementById('sliders-box').innerHTML = dims.map(d => `
     <div style="margin-bottom:12px;">
