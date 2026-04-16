@@ -332,7 +332,7 @@ const questions = [
 
 const resultsMap = {
   "M_111": { name: "《Brave Heart》战斗型全能守护者", desc: "带头冲锋陷阵的热血糖糖，跑线下/在线上追活动补充能量！在微博上也是十分活跃，充满力量地守护着真源的每个瞬间。", img: "./con.png" },
-  "M_110": { name: "《光影》暖心糖糖", desc: "喜欢参与真源在的各种活动，默默追随却坚定地陪着真源发光。", img: "./end.png" },
+  "M_110": { name: "《光影》暖心糖糖", desc: "喜欢到演唱会或是真源的个人活动现场看本人，默默追随却坚定地陪着真源发光。", img: "./end.png" },
   "M_101": { name: "《出渊》坚持不懈硬核爱妻", desc: "不爱社交但线下必到！靠着不懈的坚持疯狂安利，拽酷又充满实力的硬核陪伴。", img: "./con.png" },
   "M_100": { name: "《心桥》温柔搭桥人", desc: "只要安静看着真源平安健康就好。不张扬地给予最长情的守候。", img: "./cry.png" },
   "M_011": { name: "《靠近我》大家必须吃我安利之糖", desc: "哪里有物料哪里就有我！！对真源的反差萌毫无抵抗力，彻底认输！", img: "./cry.png" },
@@ -449,21 +449,54 @@ function calculateResult() {
     {id:'d', l:'太阳属性', r:'月亮属性', v:scores.D, color:'var(--bar-d-green)'}
   ];
 
-  document.getElementById('sliders-box').innerHTML = dims.map(d => `
-    <div style="margin-bottom:18px;">
-      <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:5px;">
-        <span>${d.l}</span><span>${d.r}</span>
+  // 生成 MBTI 风格的进度条
+  document.getElementById('sliders-box').innerHTML = dims.map(d => {
+    // 1. 计算左右两边的百分比
+    let leftP = Math.max(0, Math.min(100, Math.round(((d.v + 8) / 16) * 100)));
+    let rightP = 100 - leftP;
+    
+    // 2. 判断哪边比较多 (大于等于50%算左边胜出)
+    let leftIsDominant = leftP >= 50;
+    
+    // 3. 设定两边的颜色 (多的那方套用你设定的专属色，少的那方变浅灰色)
+    let leftBarColor = leftIsDominant ? d.color : '#eef2f0';
+    let rightBarColor = !leftIsDominant ? d.color : '#eef2f0';
+    
+    // 4. 设定文字颜色 (让百分比数字和底下的标签也能跟着变色，更有质感)
+    let leftTextColor = leftIsDominant ? d.color : 'var(--text-light)';
+    let rightTextColor = !leftIsDominant ? d.color : 'var(--text-light)';
+
+    return `
+    <div style="margin-bottom: 26px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <span style="width: 45px; text-align: left; font-size: 16px; font-weight: bold; color: ${leftTextColor};">${leftP}%</span>
+        
+        <div style="flex-grow: 1; display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin: 0 10px; background: #eef2f0;">
+          <div id="fill-l-${d.id}" style="width: 0%; background: ${leftBarColor}; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);"></div>
+          <div id="fill-r-${d.id}" style="width: 0%; background: ${rightBarColor}; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);"></div>
+        </div>
+
+        <span style="width: 45px; text-align: right; font-size: 16px; font-weight: bold; color: ${rightTextColor};">${rightP}%</span>
       </div>
-      <div class="slider-bar">
-        <div id="fill-${d.id}" class="slider-fill" style="background:${d.color}"></div>
+      
+      <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;">
+        <span style="color: ${leftTextColor}; transition: color 0.4s;">${d.l}</span>
+        <span style="color: ${rightTextColor}; transition: color 0.4s;">${d.r}</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   
+  // 触发动画，让两边的颜色分别往中间长
   dims.forEach(d => {
-    let p = Math.max(0, Math.min(100, Math.round(((d.v + 8) / 16) * 100)));
-    setTimeout(() => { document.getElementById(`fill-${d.id}`).style.width = p + '%'; }, 200);
+    let leftP = Math.max(0, Math.min(100, Math.round(((d.v + 8) / 16) * 100)));
+    let rightP = 100 - leftP;
+    setTimeout(() => { 
+      document.getElementById(`fill-l-${d.id}`).style.width = leftP + '%'; 
+      document.getElementById(`fill-r-${d.id}`).style.width = rightP + '%'; 
+    }, 200);
   });
-}
+} //
+
 </script>
 </body>
 </html>
